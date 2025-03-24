@@ -43,6 +43,7 @@ const CartItem = ({ item }) => {
 						{item.name}
 					</p>
 					<p className='text-sm text-gray-400'>{item.description}</p>
+					<p className='text-sm text-gray-400'>{item.category}</p>
 
 					<div className='flex items-center gap-4'>
 						<button

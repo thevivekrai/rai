@@ -37,8 +37,8 @@ export const signup = async (req, res) => {
 	const { phone, password, name } = req.body;
 	console.log("Signup request body:", req.body); // Debug log
 	try {
-		if (!phone) {
-			return res.status(400).json({ message: "Phone number is required" }); // Explicit error for missing phone
+		if (!phone || !/^\d{10}$/.test(phone)) {
+			return res.status(400).json({ message: "Phone number must be exactly 10 digits" }); // Explicit error for invalid phone
 		}
 		const userExists = await User.findOne({ phone });
 

@@ -15,12 +15,18 @@ export const useUserStore = create((set, get) => ({
 			return toast.error("Passwords do not match");
 		}
 
+		if (!/^\d{10}$/.test(phone)) {
+			set({ loading: false });
+			return toast.error("Phone number must be exactly 10 digits");
+		}
+
 		try {
 			const res = await axios.post("/auth/signup", { name, phone, password });
 			set({ user: res.data, loading: false });
+			toast.success("Signup successful!");
 		} catch (error) {
 			set({ loading: false });
-			toast.error(error.response.data.message || "An error occurred");
+			toast.error(error.response?.data?.message || "An error occurred during signup");
 		}
 	},
 	login: async (phone, password) => {

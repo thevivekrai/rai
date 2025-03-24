@@ -40,9 +40,10 @@ export const signup = async (req, res) => {
 		if (!phone || !/^\d{10}$/.test(phone)) {
 			return res.status(400).json({ message: "Phone number must be exactly 10 digits" }); // Explicit error for invalid phone
 		}
-		if (!email) {
-			return res.status(400).json({ message: "Email is required" }); // Explicit error for missing email
-		}
+		// Remove the email validation check
+		// if (!email) {
+		//     return res.status(400).json({ message: "Email is required" }); // Explicit error for missing email
+		// }
 		const userExists = await User.findOne({ phone });
 
 		if (userExists) {

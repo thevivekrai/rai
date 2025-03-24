@@ -72,6 +72,10 @@ const PurchaseSuccessPage = () => {
 							<span className='text-sm text-gray-400'>Estimated delivery</span>
 							<span className='text-sm font-semibold text-emerald-400'>3-5 business days</span>
 						</div>
+						<div className='flex items-center justify-between'>
+							<span className='text-sm text-gray-400'>Total Amount</span>
+							<span className='text-sm font-semibold text-emerald-400'>₹{totalAmount}</span>
+						</div>
 					</div>
 
 					<div className='space-y-4'>

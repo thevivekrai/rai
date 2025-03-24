@@ -59,6 +59,6 @@ export const useCartStore = create((set, get) => ({
 	calculateTotals: () => {
 		const { cart } = get();
 		const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-		set({ subtotal, total: subtotal });
+		set({ subtotal, total: `₹${subtotal}` });
 	},
 }));

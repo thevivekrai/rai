@@ -34,14 +34,18 @@ const setCookies = (res, accessToken, refreshToken) => {
 };
 
 export const signup = async (req, res) => {
-	const { email, password, name } = req.body;
+	const { phone, password, name } = req.body;
+	console.log("Signup request body:", req.body); // Debug log
 	try {
-		const userExists = await User.findOne({ email });
+		if (!phone) {
+			return res.status(400).json({ message: "Phone number is required" }); // Explicit error for missing phone
+		}
+		const userExists = await User.findOne({ phone });
 
 		if (userExists) {
 			return res.status(400).json({ message: "User already exists" });
 		}
-		const user = await User.create({ name, email, password });
+		const user = await User.create({ name, phone, password });
 
 		// authenticate
 		const { accessToken, refreshToken } = generateTokens(user._id);
@@ -52,7 +56,7 @@ export const signup = async (req, res) => {
 		res.status(201).json({
 			_id: user._id,
 			name: user.name,
-			email: user.email,
+			phone: user.phone,
 			role: user.role,
 		});
 	} catch (error) {
@@ -63,8 +67,8 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
 	try {
-		const { email, password } = req.body;
-		const user = await User.findOne({ email });
+		const { phone, password } = req.body;
+		const user = await User.findOne({ phone });
 
 		if (user && (await user.comparePassword(password))) {
 			const { accessToken, refreshToken } = generateTokens(user._id);
@@ -74,11 +78,11 @@ export const login = async (req, res) => {
 			res.json({
 				_id: user._id,
 				name: user.name,
-				email: user.email,
+				phone: user.phone,
 				role: user.role,
 			});
 		} else {
-			res.status(400).json({ message: "Invalid email or password" });
+			res.status(400).json({ message: "Invalid phone number or password" });
 		}
 	} catch (error) {
 		console.log("Error in login controller", error.message);

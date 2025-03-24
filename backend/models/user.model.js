@@ -7,12 +7,16 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: [true, "Name is required"],
 		},
-		email: {
+		phone: {
 			type: String,
-			required: [true, "Email is required"],
+			required: [true, "Phone number is required"],
 			unique: true,
-			lowercase: true,
-			trim: true,
+			validate: {
+				validator: function (v) {
+					return /^\d{10}$/.test(v); // Ensure phone number is exactly 10 digits
+				},
+				message: "Phone number must be exactly 10 digits",
+			},
 		},
 		password: {
 			type: String,

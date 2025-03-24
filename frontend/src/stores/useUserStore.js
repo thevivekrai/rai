@@ -7,7 +7,7 @@ export const useUserStore = create((set, get) => ({
 	loading: false,
 	checkingAuth: true,
 
-	signup: async ({ name, email, password, confirmPassword }) => {
+	signup: async ({ name, phone, password, confirmPassword }) => {
 		set({ loading: true });
 
 		if (password !== confirmPassword) {
@@ -16,18 +16,18 @@ export const useUserStore = create((set, get) => ({
 		}
 
 		try {
-			const res = await axios.post("/auth/signup", { name, email, password });
+			const res = await axios.post("/auth/signup", { name, phone, password });
 			set({ user: res.data, loading: false });
 		} catch (error) {
 			set({ loading: false });
 			toast.error(error.response.data.message || "An error occurred");
 		}
 	},
-	login: async (email, password) => {
+	login: async (phone, password) => {
 		set({ loading: true });
 
 		try {
-			const res = await axios.post("/auth/login", { email, password });
+			const res = await axios.post("/auth/login", { phone, password });
 
 			set({ user: res.data, loading: false });
 		} catch (error) {

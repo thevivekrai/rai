@@ -34,22 +34,20 @@ const setCookies = (res, accessToken, refreshToken) => {
 };
 
 export const signup = async (req, res) => {
-	const { phone, password, name, email } = req.body;
+	const { phone, password, name } = req.body;
 	console.log("Signup request body:", req.body); // Debug log
 	try {
 		if (!phone || !/^\d{10}$/.test(phone)) {
 			return res.status(400).json({ message: "Phone number must be exactly 10 digits" }); // Explicit error for invalid phone
 		}
-		// Remove the email validation check
-		// if (!email) {
-		//     return res.status(400).json({ message: "Email is required" }); // Explicit error for missing email
-		// }
+
 		const userExists = await User.findOne({ phone });
 
 		if (userExists) {
 			return res.status(400).json({ message: "User already exists" });
 		}
-		const user = await User.create({ name, phone, password, email });
+
+		const user = await User.create({ name, phone, password });
 
 		// authenticate
 		const { accessToken, refreshToken } = generateTokens(user._id);
@@ -61,7 +59,6 @@ export const signup = async (req, res) => {
 			_id: user._id,
 			name: user.name,
 			phone: user.phone,
-			email: user.email,
 			role: user.role,
 		});
 	} catch (error) {
